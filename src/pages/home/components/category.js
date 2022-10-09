@@ -1,6 +1,4 @@
 const Category = (props) => {
-  console.log('>> PROP', props)
-
   return (
     <div className="col">
       <div className="card mb-4 rounded-3 shadow-sm border-primary">

@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import useApi from '../../hooks/useApi'
 
+import {connect} from 'react-redux'
 
-const Header = () => {
+const Header = (props) => {
+  console.log('>> Header props:', props)
+
   const api = useApi()
   const [user, setUser] = useState(null)
 
@@ -46,6 +49,8 @@ const Header = () => {
           <span className="fs-4">Api Tutorial</span>
         </a>
 
+        Token: {props.authState.token}
+
         {user ? (
           <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <strong className=" me-3 py-2">
@@ -66,12 +71,17 @@ const Header = () => {
             </a>
           </nav>
         )}
-
       </div>
-
     </header>
   )
 }
 
-export default Header
+const mapStateToPropsFunc = (state) => {
+  console.log('>> MAP STATE', state)
 
+  return {
+    ...state,
+  }
+}
+
+export default connect(mapStateToPropsFunc)(Header)

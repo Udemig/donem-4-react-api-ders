@@ -1,10 +1,15 @@
 import {useEffect, useState} from 'react'
 import useApi from '../../hooks/useApi'
 import Category from './components/category'
+import {useDispatch, connect} from 'react-redux'
+import {setToken} from '../../store/reducers/authReducer'
 
-const Home = () => {
+const Home = (props) => {
   const [categories, setCategories] = useState([])
+  console.log('>> HOME COMPONENT CONTENT', props, categories)
+
   const api = useApi()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     api.get('public/categories/listMainCategories')
@@ -17,11 +22,30 @@ const Home = () => {
       })
   }, [])
 
+  const onChange = (e) => {
+    setToken(dispatch, e.target.value)
+
+    dispatch({
+      type: 'set_token',
+      payload: {
+        token: e.target.value,
+        username: null,
+        mail: null,
+        birthdate: null,
+      },
+    })
+  }
+
   return (<main>
+    <input type="text" onChange={onChange} />
+    <br />
+    Token: {props.authState.token}
+    <br />
     <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">
+
       {categories.map((category) => {
         return (
-          <Category categoryProp={category} />
+          <Category key={category.id} categoryProp={category} />
         )
       })}
     </div>
@@ -29,4 +53,22 @@ const Home = () => {
   </main>)
 }
 
-export default Home
+
+const mapStateToProps = (state) => {
+  console.log('>> HOME MAP STATE', state)
+
+  /*
+state değeri:
+{
+  appDataState: OBJECT,
+  authState: OBJECT,
+}
+   */
+
+  return {
+    //...state,
+    authState: state.authState,
+  }
+}
+
+export default connect(mapStateToProps)(Home)
