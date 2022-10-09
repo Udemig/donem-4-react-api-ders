@@ -37,12 +37,7 @@ const Home = (props) => {
   }
 
   return (<main>
-    <input type="text" onChange={onChange} />
-    <br />
-    Token: {props.authState.token}
-    <br />
     <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">
-
       {categories.map((category) => {
         return (
           <Category key={category.id} categoryProp={category} />
@@ -52,7 +47,6 @@ const Home = (props) => {
 
   </main>)
 }
-
 
 const mapStateToProps = (state) => {
   console.log('>> HOME MAP STATE', state)

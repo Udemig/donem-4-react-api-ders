@@ -1,16 +1,11 @@
+const localStorageToken = localStorage.getItem('token')
+
 const initialState = {
-  token: null,
-  username: null,
-  mail: null,
-  birthdate: null,
+  token: localStorageToken,
 }
 
-// ECMAScript 5: Tüm browserlar bunu destekler
-// const axios = require('axios')
-// const Home = require('./Home')
-// ECMAScript 6: Tüm browserlar bunu desteklemez, nodejs bunu destekler.
-// import axios from 'axios'
-// import Home from '../../../pages/home'
+export const SET_TOKEN = 'set_token'
+export const REMOVE_TOKEN = 'remove_token'
 
 export const setToken = (dispatch, value) => {
   dispatch({
@@ -20,8 +15,6 @@ export const setToken = (dispatch, value) => {
     },
   })
 }
-
-module.exports = {setToken}
 
 export const setUsername = (dispatch, username) => {
   dispatch({
@@ -35,18 +28,15 @@ export const setUsername = (dispatch, username) => {
 const authReducer = (state = initialState, action) => {
   console.log('>> AUTH REDUCER', state, action)
 
-  //action.type
-  //action.payload
-
   switch (action.type) {
-    case 'set_token':
+    case SET_TOKEN:
       console.log('>> AUTH REDUCER SET TOKEN', action.payload)
       return {
         ...state,
         token: action.payload.token,
       }
 
-    case 'remove_token':
+    case REMOVE_TOKEN:
       return {
         ...state,
         token: null,

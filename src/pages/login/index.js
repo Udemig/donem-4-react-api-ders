@@ -1,15 +1,16 @@
 import {useState} from 'react'
 import useApi from '../../hooks/useApi'
+import {connect, useDispatch} from 'react-redux'
+import {SET_TOKEN} from '../../store/reducers/authReducer'
 
-const Login = () => {
+const Login = (props) => {
+  console.log('>> LOGIN PAGE PROPS', props)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
   const api = useApi()
 
   const onLoginBtnClick = () => {
-    //alert(`${email} ve ${password}`)
-
     const postData = {
       email, password,
     }
@@ -22,11 +23,16 @@ const Login = () => {
 
         if (response.data.status === 'success') {
           localStorage.setItem('token', response.data.data.token)
-          window.location.href = '/#'
 
-          setTimeout(() => {
-            window.location.reload()
-          }, 111)
+          const action = {
+            type: SET_TOKEN,
+            payload: {
+              token: response.data.data.token,
+            },
+          }
+          props.dispatch(action)
+
+          window.location.href = '/#'
         } else {
           alert('Hatalı eposta veya şifre girildi.')
         }
@@ -75,4 +81,12 @@ const Login = () => {
   </main>)
 }
 
-export default Login
+const mapStateToProps = (state) => {
+  console.log('>> LOGIN MAP STATE', state)
+
+  return {
+    ...state,
+  }
+}
+
+export default connect(mapStateToProps)(Login)

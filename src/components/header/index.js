@@ -7,23 +7,6 @@ const Header = (props) => {
   console.log('>> Header props:', props)
 
   const api = useApi()
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    if (token) {
-      api.get('user/appData')
-        .then((response) => {
-          console.log('>> APP DATA RESP', response)
-          setUser(response.data.data.user)
-        })
-        .catch((err) => {
-          console.log('>> ERR', err)
-        })
-    }
-
-  }, [])
 
   const onLogoutBtnClick = () => {
     api.get('auth/logout')
@@ -51,10 +34,10 @@ const Header = (props) => {
 
         Token: {props.authState.token}
 
-        {user ? (
+        {props.appDataState.appData ? (
           <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <strong className=" me-3 py-2">
-              {user.fullname}
+              {props.appDataState.appData.user.fullname}
             </strong>
             <button className="btn btn-primary py-2"
                     onClick={onLogoutBtnClick}>
